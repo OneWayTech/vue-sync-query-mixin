@@ -1,4 +1,6 @@
-import './polyfill/Array.prototype.includes'
-import './polyfill/String.prototype.endsWith'
+/* eslint-disable */
+require('./polyfill/Array.prototype.includes');
+require('./polyfill/String.prototype.endsWith');
 
-export * from './mixins/syncQuery'
+module.exports = require('./mixins/syncQuery');
+/* eslint-disable */
