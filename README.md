@@ -3,7 +3,7 @@
 [![npm version][npm-v-img]][npm-url]
 [![npm download][npm-dl-img]][npm-url]
 
-> Effortlessly keep local state and $route.query in sync for Vue 1.x  
+> Effortlessly keep local state and `$route.query` in sync for Vue 1.x  
 > Intellectual property of [Oneway.mobi](http://www.oneway.mobi/)
 
 ### Requirement
@@ -19,7 +19,7 @@ alternatively：
 
 ### Usage
 
-**Convention**: fields end with `$` would be set to keep in sync with $route.query
+**Convention**: fields end with `$` would be set to keep in sync with `$route.query`
 
 ```js
 // This is a Vue component
@@ -47,7 +47,7 @@ e.g. (see the example above)
 
 ### Build
 
-`npm run build`, output piped into `dist/`
+`npm run build`
 
 [npm-url]: https://www.npmjs.com/package/vue-sync-query-mixin
 [npm-v-img]: http://img.shields.io/npm/v/vue-sync-query-mixin.svg
