@@ -48,7 +48,9 @@ exports.default = {
       this[origField] = this.$data['$' + field];
     },
     _watch: function _watch(origField, field) {
-      this.$watch(origField, function (v) {
+      this.$watch(origField, function (v, oldV) {
+        if ('' + v === '' + oldV) return;
+
         this.updateQuery(_defineProperty({}, field, v));
       });
     },

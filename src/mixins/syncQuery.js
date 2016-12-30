@@ -41,7 +41,8 @@ export default {
       this[origField] = this.$data[`$${field}`]
     },
     _watch (origField, field) {
-      this.$watch(origField, function (v) {
+      this.$watch(origField, function (v, oldV) {
+        if ('' + v === '' + oldV) return
         // local state ==(sync)==> query string
         this.updateQuery({ [field]: v })
       })
