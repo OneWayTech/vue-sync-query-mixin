@@ -8,9 +8,9 @@ var _vueUpdateQueryMixin = require('vue-update-query-mixin');
 
 var _vueUpdateQueryMixin2 = _interopRequireDefault(_vueUpdateQueryMixin);
 
-var _difference = require('../utils/difference');
+var _objectify = require('../utils/objectify');
 
-var _difference2 = _interopRequireDefault(_difference);
+var _objectify2 = _interopRequireDefault(_objectify);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18,55 +18,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 exports.default = {
   mixins: [_vueUpdateQueryMixin2.default],
-
-  data: function data() {
-    return { syncQueryFields_: [] };
-  },
-  watch: {
-    '$route.query': function $routeQuery(curQuery, oldQuery) {
-      var missingKeys = (0, _difference2.default)(Object.keys(oldQuery), Object.keys(curQuery));
-      this.syncQuery(missingKeys);
-    }
-  },
   methods: {
-    _init: function _init() {
-      var specialFields = [];
-      for (var origField in this.$data) {
-        if (!origField.endsWith('$')) continue;
-
-        var field = origField.replace(/\$$/, '');
-        specialFields.push(field);
-        this._cache(origField, field);
-        this._watch(origField, field);
+    syncQuery: function syncQuery(fieldsMap) {
+      if (!fieldsMap) throw new Error('syncQuery accepted an empty value');
+      fieldsMap = (0, _objectify2.default)(fieldsMap);
+      for (var localField in fieldsMap) {
+        var queryField = fieldsMap(localField);
+        this._local2query(localField, queryField);
+        this._query2local(queryField, localField);
       }
-      this.syncQueryFields_ = specialFields;
     },
-    _cache: function _cache(origField, field) {
-      this.$data['$' + field] = this[origField];
-    },
-    _restore: function _restore(origField, field) {
-      this[origField] = this.$data['$' + field];
-    },
-    _watch: function _watch(origField, field) {
-      this.$watch(origField, function (v, oldV) {
-        if ('' + v === '' + oldV) return;
-
-        this.updateQuery(_defineProperty({}, field, v));
+    _local2query: function _local2query(localField, queryField) {
+      this._backup(localField);
+      this.$watch(localField, function (v) {
+        this.updateQuery(_defineProperty({}, queryField, v));
       });
     },
-    syncQuery: function syncQuery(missingKeys) {
-      var _this = this;
-
-      if (!missingKeys) this._init();
-
-      var query = this.$route.query;
-
-      this.syncQueryFields_.forEach(function (field) {
-        var origField = field + '$';
-
-        query[field] && (_this[origField] = query[field]);
-        missingKeys && missingKeys.includes(field) && _this._restore(origField, field);
+    _query2local: function _query2local(queryField, localField) {
+      this.$watch('$route.query.' + queryField, function (v) {
+        v ? this[localField] = v : this._restore(localField);
       });
+    },
+    _backup: function _backup(localField) {
+      this.$data['$' + localField] = this[localField];
+    },
+    _restore: function _restore(localField) {
+      this[localField] = this.$data['$' + localField];
     }
   }
 };

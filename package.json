@@ -2,7 +2,7 @@
   "name": "vue-sync-query-mixin",
   "description": "Effortlessly keep local state and $route.query in sync for Vue 1.x",
   "author": "Ken Berkeley <kenberkeley@foxmail.com>",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "main": "es/index.js",
   "scripts": {
     "build": "npm run build:es && npm run build:umd",

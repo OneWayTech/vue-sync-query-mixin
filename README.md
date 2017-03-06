@@ -1,5 +1,7 @@
 # Vue sync-query mixin
 
+> v1.x see branch `v1`
+
 [![npm version][npm-v-img]][npm-url]
 [![npm download][npm-dl-img]][npm-url]
 
@@ -19,31 +21,30 @@ alternatively：
 
 ### Usage
 
-**Convention**: fields end with `$` would be set to keep in sync with `$route.query`
-
 ```js
 // This is a Vue component
 import syncQuery from 'vue-sync-query-mixin'
 
 export default {
   mixins: [syncQuery],
-  // local state
-  data: () => ({
-    hello: 'world', // just a ordinary field
-    foo$: 'bar'     // will keep in sync with `$route.query.foo`
-  }),
+  data: () => ({ limit: 10, offset: 0 }),
   ready () {
-    this.syncQuery() // start watching changes to sync...
+    this.syncQuery(['limit', 'offset'])
+    // `limit` will keep in sync with `$route.query.limit`
+    // `offset` will keep in sync with `$route.query.offset`
   }
 }
 ```
 
+`syncQuery` accepts 3 types of argument:
+
+* `string`, e.g. `syncQuery('limit') // limit will keep in sync with $route.query.limit`
+* `array`, see example above
+* `object`, e.g. `syncQuery({ limit: 'limitBy' }) // limit will keep in sync with $route.query.limitBy`
+
 ### Notice
 
 * `local state <==(sync)== query string`, the type is `string`
-* we use the same field names (but start with `$`) to cache the default values  
-e.g. (see the example above)  
-`foo$` is set to keep in sync with `$route.query.foo`, while `$foo` is used to store the default value `bar`
 
 ### Build
 
