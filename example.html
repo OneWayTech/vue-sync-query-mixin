@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Vue Sync Query Mixin Example</title>
+</head>
+<body>
+  <h4>Modify both input boxes and query string of the URL, to see how they keep in sync</h4>
+  <div id="app">
+    <fieldset>
+      <code>$route.query: {{ $route.query | json }}</code>
+    </fieldset>
+    <fieldset>
+      <code>$vm.$data: {{ $data | json }}</code><hr>
+      a: <input type="text" v-model="a" lazy>&emsp;
+      b: <input type="text" v-model="b" lazy>&emsp;
+      c: <input type="text" v-model="c" lazy><br>
+      d: {{ d | json }} <button @click="d.push(4)">push</button><br>
+      e: <input type="text" v-model="e" lazy>&emsp;
+      f: <input type="text" v-model="f" lazy>&emsp;
+      g: <input type="text" v-model="g" lazy>
+    </fieldset>
+  </div>
+<script src="//cdn.bootcss.com/vue/1.0.28/vue.min.js"></script>
+<script src="//cdn.bootcss.com/vue-router/0.7.13/vue-router.min.js"></script>
+<script src="./dist/vue-sync-query-mixin.min.js"></script>
+<pre id="script" style="font-size: 12px">
+/**************** Source Code ****************/
+Vue.use(VueRouter);
+Vue.config.devtools = true;
+
+// root component
+var App = {
+  mixins: [VueSyncQuery.default],
+  data: function () {
+    return { a: 1, b: 2, c: 3, d: [4, 4, 4, 4], e: 5, f: 6, g: 7 };
+  },
+  ready: function () {
+    this.syncQuery('a');
+    this.syncQuery(['b', 'c']);
+    this.syncQuery({
+      localField: 'd',
+      queryField: 'dddd',
+      local2query: function (v) {
+        return v.join(',');
+      },
+      query2local: function (v) {
+        // return falsy value meaning restore the default value
+        return v ? v.split(',') : null;
+      }
+    });
+    this.syncQuery([
+      'e', // same as { localField: 'e', queryField: 'e' }
+      { localField: 'f', queryField: 'ffffff' }
+    ]);
+    this.syncQuery({
+      localField: 'g',
+      queryField: 'ggggggg',
+      local2query: { immediate: true }
+    });
+  }
+};
+
+// run app!
+var router = new VueRouter();
+router.map({ '/': { component: {} } });
+router.start(App, '#app');
+</pre>
+<script>
+eval(document.getElementById('script').innerHTML);
+</script>
+</body>
+</html>

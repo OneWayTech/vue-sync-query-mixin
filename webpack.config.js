@@ -10,7 +10,7 @@ module.exports = {
     ]
   },
   output: {
-    library: 'syncQuery',
+    library: 'VueSyncQuery',
     libraryTarget: 'umd'
   },
   plugins: [

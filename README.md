@@ -13,41 +13,128 @@
 * Vue Router 0.7.x
 
 ### Installation
-
 `npm i vue-sync-query-mixin -S`
 
-alternatively：  
-`<script src="dist/vue-sync-query-mixin.min.js"></script>`
+alternatively：`<script src="dist/vue-sync-query-mixin.min.js"></script>`  
+which exposes **`VueSyncQuery`** as a global variable
+
+### Example
+See [here](https://kenberkeley.github.io/vue-sync-query-mixin/example.html), source in [`example.html`](./example.html)
 
 ### Usage
-
 ```js
 // This is a Vue component
 import syncQuery from 'vue-sync-query-mixin'
 
 export default {
   mixins: [syncQuery],
-  data: () => ({ limit: 10, offset: 0 }),
+  data: () => ({ limit: 10 }),
   ready () {
-    this.syncQuery(['limit', 'offset'])
     // `limit` will keep in sync with `$route.query.limit`
-    // `offset` will keep in sync with `$route.query.offset`
+    this.syncQuery('limit')
   }
 }
 ```
 
-`syncQuery` accepts 3 types of argument:
+`syncQuery` accepts 4 types of argument:
 
-* `string`, e.g. `syncQuery('limit') // limit will keep in sync with $route.query.limit`
-* `array`, see example above
-* `object`, e.g. `syncQuery({ limit: 'limitBy' }) // limit will keep in sync with $route.query.limitBy`
+* `string|string[]`
+
+```js
+this.syncQuery('limit')
+this.syncQuery(['limit'])
+```
+
+* `object|object[]`
+
+```js
+this.syncQuery({
+  localField: 'limit',
+  queryField: 'limit',
+  local2query: {
+    formatter: v => v,
+    immediate: false,
+    deep: false
+  },
+  query2local: {
+    formatter: v => v,
+    immediate: true,
+    deep: false
+  }
+})
+this.syncQuery([
+  {
+    localField: 'limit',
+    queryField: 'limit',
+    local2query: {
+      formatter: v => v,
+      immediate: false,
+      deep: false
+    },
+    query2local: {
+      formatter: v => v,
+      immediate: true,
+      deep: false
+    }
+  }
+])
+```
+
+### Magic
+
+> More detail in [source code](./src/mixins/syncQuery.js)  
+> Vue.js official `vm.$watch( expOrFn, callback, [options] )` API documentation is [here](http://v1.vuejs.org/api/#vm-watch)
+
+```js
+_syncQuery ({ localField, queryField, local2query, query2local }) {
+  (() => {
+    // backup the default value
+    const defaultVal = this[localField]
+    
+    // local ==(sync)==> query
+    this.$watch(localField, function (v, oldV) {
+      this.updateQuery({ [queryField]: local2query.formatter(v, oldV) })
+    }, local2query)
+
+    // local <==(sync)== query
+    this.$watch(`$route.query.${queryField}`, function (v, oldV) {
+      this[localField] = query2local.formatter(v, oldV) || defaultVal
+    }, query2local)
+  })()
+}
+```
 
 ### Notice
+* `local <==(sync)== query`, default type is `string`, or else you need to write `formatter` yourself
+* default `local2query` and `query2local` shown as below:
 
-* `local state <==(sync)== query string`, the type is `string`
+```js
+/**
+ * default descriptor generator for $watch
+ * @param  {String} field
+ * @return {Object}
+ */
+function defaultDescGen(field) {
+  return {
+    localField: field,
+    queryField: field,
+    local2query: { // <----------------------
+      formatter: v => v,
+      immediate: false,
+      deep: false
+    },
+    query2local: { // <----------------------
+      formatter: v => v,
+      immediate: true,
+      deep: false // P.S. watching deep of a string makes no sense
+    }
+  }
+}
+```
+
+But they can be `function` type, and then we regard them as the `formatter`
 
 ### Build
-
 `npm run build`
 
 [npm-url]: https://www.npmjs.com/package/vue-sync-query-mixin

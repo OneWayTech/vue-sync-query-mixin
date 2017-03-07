@@ -5,6 +5,7 @@
   "version": "2.0.0",
   "main": "es/index.js",
   "scripts": {
+    "prebuild": "rimraf es dist",
     "build": "npm run build:es && npm run build:umd",
     "build:es": "babel src --out-dir es",
     "build:umd": "webpack src/ dist/vue-sync-query-mixin.min.js"
@@ -29,6 +30,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "eslint": "^1.10.3",
     "eslint-loader": "^1.6.1",
+    "rimraf": "^2.6.1",
     "webpack": "^1.14.0"
   },
   "license": "MIT"

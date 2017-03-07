@@ -1,36 +1,64 @@
 import updateQuery from 'vue-update-query-mixin'
-import objectify from '../utils/objectify'
+import typeOf from '../utils/typeOf'
+import mergeDesc from '../utils/mergeDesc'
+const err = msg => { throw new Error('[SyncQuery] ' + msg) }
 
 export default {
   mixins: [updateQuery],
   methods: {
-    syncQuery (fieldsMap) {
-      if (!fieldsMap) throw new Error('syncQuery accepted an empty value')
-      fieldsMap = objectify(fieldsMap)
-      for (let localField in fieldsMap) {
-        const queryField = fieldsMap(localField)
-        this._local2query(localField, queryField)
-        this._query2local(queryField, localField)
+    syncQuery (fields) {
+      if (!fields) err('empty fields')
+      switch (typeOf(fields)) {
+        case 'string':
+          this._syncQuery(defaultDescGen(fields))
+          break
+        case 'object':
+          this._syncQuery(mergeDesc(defaultDescGen(fields.localField), fields))
+          break
+        case 'array':
+          fields.forEach(field => this.syncQuery(field))
+          break
+        default:
+          err('invalid type of field')
       }
     },
-    _local2query (localField, queryField) {
-      this._backup(localField)
-      this.$watch(localField, function (v) {
-        this.updateQuery({ [queryField]: v })
-      })
+    _syncQuery ({ localField, queryField, local2query, query2local }) {
+      (() => {
+        // backup the default value
+        const defaultVal = this[localField]
+        
+        // local ==(sync)==> query
+        this.$watch(localField, function (v, oldV) {
+          this.updateQuery({ [queryField]: local2query.formatter(v, oldV) })
+        }, local2query)
+
+        // local <==(sync)== query
+        this.$watch(`$route.query.${queryField}`, function (v, oldV) {
+          this[localField] = query2local.formatter(v, oldV) || defaultVal
+        }, query2local)
+      })()
+    }
+  }
+}
+
+/**
+ * default descriptor generator for $watch
+ * @param  {String} field
+ * @return {Object}
+ */
+function defaultDescGen(field) {
+  return {
+    localField: field,
+    queryField: field,
+    local2query: {
+      formatter: v => v,
+      immediate: false,
+      deep: false
     },
-    _query2local (queryField, localField) {
-      this.$watch(`$route.query.${queryField}`, function (v) {
-        // P.S. local state <==(sync)== query string, type is string
-        v ? this[localField] = v : this._restore(localField)
-      })
-    },
-    // backup the default value (e.g. `limit` defaults to 5, so `$limit` caches 5)
-    _backup (localField) {
-      this.$data[`$${localField}`] = this[localField]
-    },
-    _restore(localField) {
-      this[localField] = this.$data[`$${localField}`]
+    query2local: {
+      formatter: v => v,
+      immediate: true,
+      deep: false // P.S. watching deep of a string makes no sense
     }
   }
 }
