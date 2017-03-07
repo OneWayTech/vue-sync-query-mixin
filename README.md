@@ -118,12 +118,12 @@ function defaultDescGen(field) {
   return {
     localField: field,
     queryField: field,
-    local2query: { // <----------------------
+    local2query: {
       formatter: v => v,
       immediate: false,
       deep: false
     },
-    query2local: { // <----------------------
+    query2local: {
       formatter: v => v,
       immediate: true,
       deep: false // P.S. watching deep of a string makes no sense
@@ -132,7 +132,34 @@ function defaultDescGen(field) {
 }
 ```
 
-But they can be `function` type, and then we regard them as the `formatter`
+But they can be `function` type, and then we regard them as the `formatter`  
+What's more, all the options are `merge` not `override`, for example:
+
+```js
+syncQuery({
+  localField: 'limit',
+  queryField: 'limit',
+  local2query: { immediate: true },
+  query2local: v => +v // string to number
+})
+
+// ↑ is same as ↓
+
+syncQuery({
+  localField: field,
+  queryField: field,
+  local2query: {
+    formatter: v => v,
+    immediate: true, // merge!
+    deep: false
+  },
+  query2local: {
+    formatter: v => +v, // merge!
+    immediate: true,
+    deep: false
+  }
+})
+```
 
 ### Build
 `npm run build`
