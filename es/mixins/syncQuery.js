@@ -59,6 +59,7 @@ exports.default = {
         var defaultVal = _this2[localField];
 
         _this2.$watch(localField, function (v, oldV) {
+          if (v == oldV) return;
           this.updateQuery(_defineProperty({}, queryField, local2query.formatter(v, oldV)));
         }, local2query);
 
