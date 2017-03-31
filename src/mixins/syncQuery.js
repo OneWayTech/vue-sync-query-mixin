@@ -29,7 +29,6 @@ export default {
         
         // local ==(sync)==> query
         this.$watch(localField, function (v, oldV) {
-          if (v == oldV) return // eslint-disable-line
           this.updateQuery({ [queryField]: local2query.formatter(v, oldV) })
         }, local2query)
 

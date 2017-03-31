@@ -1,14 +1,14 @@
 {
   "name": "vue-sync-query-mixin",
-  "description": "Effortlessly keep local state and $route.query in sync for Vue 1.x",
+  "description": "Effortlessly keep local state and $route.query in sync for Vue 1.x|2.x",
   "author": "Ken Berkeley <kenberkeley@foxmail.com>",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "main": "es/index.js",
   "scripts": {
-    "prebuild": "rimraf es dist",
-    "build": "npm run build:es && npm run build:umd",
     "build:es": "babel src --out-dir es",
-    "build:umd": "webpack src/ dist/vue-sync-query-mixin.min.js"
+    "build:umd": "webpack src/ dist/vue-sync-query-mixin.min.js",
+    "prebuild": "rimraf es dist",
+    "build": "npm run build:es && npm run build:umd"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "sync"
   ],
   "dependencies": {
-    "vue-update-query-mixin": "^1.0.0"
+    "vue-update-query-mixin": "^1.1.4"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

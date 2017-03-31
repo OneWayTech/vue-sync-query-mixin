@@ -13,6 +13,9 @@ module.exports = {
     library: 'VueSyncQuery',
     libraryTarget: 'umd'
   },
+  externals: {
+    vue: 'vue'
+  },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
       compressor: {

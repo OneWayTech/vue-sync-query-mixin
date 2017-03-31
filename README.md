@@ -1,16 +1,16 @@
 # Vue sync-query mixin
 
-> v1.x see branch `v1`
+> `vue-sync-query-mixin@1.x` see branch `v1`
 
 [![npm version][npm-v-img]][npm-url]
 [![npm download][npm-dl-img]][npm-url]
 
-> Effortlessly keep local state and `$route.query` in sync for Vue 1.x  
+> Effortlessly keep local state and `$route.query` in sync for Vue 1.x | Vue 2.x  
 > Intellectual property of [Oneway.mobi](http://www.oneway.mobi/)
 
 ### Requirement
-* Vue 1.x
-* Vue Router 0.7.x
+* Vue 1.x | 2.x
+* Vue Router 0.7.x | 2.x
 
 ### Installation
 `npm i vue-sync-query-mixin -S`
@@ -19,7 +19,8 @@ alternatively：`<script src="dist/vue-sync-query-mixin.min.js"></script>`
 which exposes **`VueSyncQuery`** as a global variable
 
 ### Example
-See [here](https://kenberkeley.github.io/vue-sync-query-mixin/example.html), source in [`example.html`](./example.html)
+Vue 1.x online example is [here](https://kenberkeley.github.io/vue-sync-query-mixin/example-vue1.html) (source code is [`./example-vue1.html`](./example-vue1.html))  
+Vue 2.x online example is [here](https://kenberkeley.github.io/vue-sync-query-mixin/example-vue2.html) (source code is [`./example-vue2.html`](./example-vue2.html))  
 
 ### Usage
 ```js
@@ -33,6 +34,8 @@ export default {
     // `limit` will keep in sync with `$route.query.limit`
     this.syncQuery('limit')
   }
+  // Vue 1.x can use beforeCompile/compiled/ready
+  // Vue 2.x can use created/beforeMount/mounted
 }
 ```
 
@@ -83,7 +86,7 @@ this.syncQuery([
 ### Magic
 
 > More detail in [source code](./src/mixins/syncQuery.js)  
-> Vue.js official `vm.$watch( expOrFn, callback, [options] )` API documentation is [here](http://v1.vuejs.org/api/#vm-watch)
+> Vue.js official `vm.$watch( expOrFn, callback, [options] )` API documentation is [here](https://cn.vuejs.org/v2/api/#vm-watch)
 
 ```js
 _syncQuery ({ localField, queryField, local2query, query2local }) {

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Vue Sync Query Mixin Example</title>
+  <title>Vue 1.x Sync Query Mixin Example</title>
 </head>
 <body>
   <h4>Modify both input boxes and query string of the URL, to see how they keep in sync</h4>
@@ -26,10 +26,6 @@
 <script src="./dist/vue-sync-query-mixin.min.js"></script>
 <pre id="script" style="font-size: 12px">
 /**************** Source Code ****************/
-Vue.use(VueRouter);
-Vue.config.devtools = true;
-
-// root component
 var App = {
   mixins: [VueSyncQuery.default],
   data: function () {
@@ -61,10 +57,10 @@ var App = {
   }
 };
 
-// run app!
 var router = new VueRouter();
 router.map({ '/': { component: {} } });
 router.start(App, '#app');
+Vue.config.devtools = true;
 </pre>
 <script>
 eval(document.getElementById('script').innerHTML);
