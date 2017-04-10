@@ -19,8 +19,8 @@ alternatively：`<script src="dist/vue-sync-query-mixin.min.js"></script>`
 which exposes **`VueSyncQuery`** as a global variable
 
 ### Example
-Vue 1.x online example is [here](https://kenberkeley.github.io/vue-sync-query-mixin/example-vue1.html) (source code is [`./example-vue1.html`](./example-vue1.html))  
-Vue 2.x online example is [here](https://kenberkeley.github.io/vue-sync-query-mixin/example-vue2.html) (source code is [`./example-vue2.html`](./example-vue2.html))  
+Vue 1.x online example is [here](https://onewaytech.github.io/vue-sync-query-mixin/example-vue1.html) (source code is [`./example-vue1.html`](./example-vue1.html))  
+Vue 2.x online example is [here](https://onewaytech.github.io/vue-sync-query-mixin/example-vue2.html) (source code is [`./example-vue2.html`](./example-vue2.html))  
 
 ### Usage
 ```js
