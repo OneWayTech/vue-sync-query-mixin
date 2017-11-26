@@ -8,7 +8,7 @@ var _vueUpdateQueryMixin = require('vue-update-query-mixin');
 
 var _vueUpdateQueryMixin2 = _interopRequireDefault(_vueUpdateQueryMixin);
 
-var _typeOf = require('../utils/typeOf');
+var _typeOf = require('../utils/typeof');
 
 var _typeOf2 = _interopRequireDefault(_typeOf);
 
