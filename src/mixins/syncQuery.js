@@ -1,5 +1,5 @@
 import updateQuery from 'vue-update-query-mixin'
-import typeOf from '../utils/typeOf'
+import typeOf from '../utils/typeof'
 import mergeDesc from '../utils/mergeDesc'
 const err = msg => { throw new Error('[SyncQuery] ' + msg) }
 
