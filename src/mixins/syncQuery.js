@@ -26,7 +26,7 @@ export default {
       (() => {
         // backup the default value
         const defaultVal = this[localField]
-        
+
         // local ==(sync)==> query
         this.$watch(localField, function (v, oldV) {
           this.updateQuery({ [queryField]: local2query.formatter(v, oldV) })

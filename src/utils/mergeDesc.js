@@ -1,4 +1,4 @@
-import typeOf from './typeOf'
+import typeOf from './typeof'
 
 /**
  * @param  {Object} distDesc
