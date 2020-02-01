@@ -8,9 +8,9 @@ var _vueUpdateQueryMixin = require('vue-update-query-mixin');
 
 var _vueUpdateQueryMixin2 = _interopRequireDefault(_vueUpdateQueryMixin);
 
-var _typeOf = require('../utils/typeof');
+var _typeof = require('../utils/typeof');
 
-var _typeOf2 = _interopRequireDefault(_typeOf);
+var _typeof2 = _interopRequireDefault(_typeof);
 
 var _mergeDesc = require('../utils/mergeDesc');
 
@@ -31,7 +31,7 @@ exports.default = {
       var _this = this;
 
       if (!fields) err('empty fields');
-      switch ((0, _typeOf2.default)(fields)) {
+      switch ((0, _typeof2.default)(fields)) {
         case 'string':
           this._syncQuery(defaultDescGen(fields));
           break;

@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeOf = require('./typeOf');
+var _typeof = require('./typeof');
 
-var _typeOf2 = _interopRequireDefault(_typeOf);
+var _typeof2 = _interopRequireDefault(_typeof);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15,7 +15,7 @@ function mergeDesc(distDesc, srcDesc) {
     var v = srcDesc[k];
     if (!distDesc[k]) distDesc[k] = {};
 
-    switch ((0, _typeOf2.default)(v)) {
+    switch ((0, _typeof2.default)(v)) {
       case 'object':
         mergeDesc(distDesc[k], v);
         break;
